@@ -7,13 +7,14 @@ import { setMessages } from "../store/userSlice/userSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { nanoid } from "nanoid";
 import SetFriend from "../components/SetFriend";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 const ENDPOINT = process.env.REACT_APP_URL;
 
 const Chat = ({ user }) => {
   const username = useSelector((user) => user.user.username);
   const msg = useSelector((user) => user.user.messages);
-  console.log(msg);
+  
 
   const friend = useSelector((user) => user.user.selectedUser);
   const [currentSocket, setCurrentSocket] = useState(null);
@@ -44,15 +45,11 @@ const Chat = ({ user }) => {
               ? "Message sent"
               : `Message received by ${payload.username}`
           );
-          const addedChat = [...chat, payload];
-          console.log(addedChat);
-          dispatch(
-            setMessages((prevMessages) => {
-              return [...prevMessages, payload];
-            })
-          );
-          // dispatch(setMessages(addedChat));
-          setChat(addedChat);
+
+          const updatedMessages = [...chat, { ...payload }]; // Assuming msg is the initial state of messages
+
+          dispatch(setMessages((chat) => [...chat, {...payload}]));
+          setChat((chat) => [...chat, { ...payload }]);
         }
       };
 
@@ -141,11 +138,11 @@ const Chat = ({ user }) => {
         <div className="flex md:px-10">
           <UserList friend={friend} />
           <div className="flex flex-col gap-2 min-h-[85vh] max-h-[85vh] justify-end w-full p-2 md:border-r-2 border-gray-800  ">
-            <div className="text-white flex flex-col gap-2 light-scrollbar  overflow-y-scroll">
+            <ScrollToBottom className="text-white flex flex-col gap-5 light-scrollbar  overflow-y-scroll">
               {chat?.map((payload, index) => (
                 <div
                   key={index}
-                  className={`font-semibold hover:cursorpointer items-center ${
+                  className={`font-semibold hover:cursorpointer items-center my-4 ${
                     payload.username !== username ? "text-left" : "text-right"
                   }`}
                   style={{
@@ -214,7 +211,7 @@ const Chat = ({ user }) => {
                   )}
                 </div>
               ))}
-            </div>
+            </ScrollToBottom>
 
             <form onSubmit={sendChat} className="flex gap-2">
               <input
