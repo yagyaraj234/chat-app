@@ -44,10 +44,16 @@ const Chat = ({ user }) => {
               ? "Message sent"
               : `Message received by ${payload.username}`
           );
-
-          setChat((prevChat) => [...prevChat, payload]);
+          const addedChat = [...chat, payload];
+          console.log(addedChat);
+          dispatch(
+            setMessages((prevMessages) => {
+              return [...prevMessages, payload];
+            })
+          );
+          // dispatch(setMessages(addedChat));
+          setChat(addedChat);
         }
-        dispatch(setMessages((prevMessages) => [...prevMessages, payload]));
       };
 
       currentSocket.on("chat", handleChat);
@@ -58,6 +64,9 @@ const Chat = ({ user }) => {
     }
   }, [currentSocket, username, friend, dispatch]);
 
+  //  *****************************************
+  // Handle sent message
+  // *****************************************
   const sendChat = (e) => {
     e.preventDefault();
     if (currentSocket) {
@@ -67,23 +76,14 @@ const Chat = ({ user }) => {
     }
   };
 
+  //  *****************************************
+  // Handle Like button on both side Start
+  //  *****************************************
   useEffect(() => {
     if (currentSocket) {
       const handleEventsHandle = (update) => {
-        if (update && update._id) {
-          const updatedChat = (prevChat) => {
-            return prevChat.map((chatMessage) => {
-              if (update?._id === chatMessage?.id) {
-                return {
-                  ...update.payload,
-                };
-              }
-              return chatMessage;
-            });
-          };
-          setChat(updatedChat);
-          dispatch(setMessages(updatedChat));
-        }
+        dispatch(setMessages(update.updatedChat));
+        setChat(update.updatedChat);
       };
 
       currentSocket.on("eventsHandle", handleEventsHandle);
@@ -94,13 +94,10 @@ const Chat = ({ user }) => {
     }
   }, [currentSocket]);
 
-  const updateData = (payload) => {
-    console.log(payload);
+  const updateData = (updatedChat) => {
     if (currentSocket) {
       currentSocket.emit("eventsHandle", {
-        update: true,
-        _id: payload?.id,
-        payload: payload,
+        updatedChat,
       });
     }
   };
@@ -113,33 +110,30 @@ const Chat = ({ user }) => {
           liked: !payload?.liked,
         };
       }
-      console.log(payload);
-      updateData(payload);
+
       return payload;
     });
+    console.log(updatedChat);
+    updateData(updatedChat);
     setChat(updatedChat);
     dispatch(setMessages(updatedChat));
   };
 
-  // const handleDoubleClick = (id) => {
-  //   const updatedChat = chat.map((payload) => {
-  //     if (payload.id === id) {
-  //       return {
-  //         ...payload,
-  //         liked: !payload.liked, // Toggle's the 'liked' state
-  //       };
-  //     }
-  //     return payload;
-  //   });
-  //   setChat(updatedChat);
-  //   dispatch(setMessages(updatedChat));
-  // };
+  //  *****************************************
+  // Handle Like button on both side End
+  // *****************************************
 
+  //  *****************************************
+  // Delete functionality start
+  //  *****************************************
   const handleDelete = (id) => {
     const updatedChat = chat.filter((payload) => payload.id !== id);
     setChat(updatedChat);
     dispatch(setMessages(updatedChat));
   };
+  //  *****************************************
+  // Delete functionality start End
+  //  *****************************************
 
   return (
     <div>

@@ -12,6 +12,9 @@
 # production
 /build
 
+# fILES 
+Login.jsx
+
 # misc
 .DS_Store
 .env
