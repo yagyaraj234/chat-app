@@ -1,37 +1,3 @@
-// const express = require("express");
-// const { Server } = require("socket.io");
-// const cors = require("cors");
-// const http = require("http");
-// const dbConnect = require("./database/dbConnect");
-// const PORT = process.env.PORT || 4500;
-// const app = express();
-
-// const loginRoute = require("./controllers/loginRoute");
-// const signupRoute = require("./controllers/signupRoute");
-
-// app.use(cors());
-
-// const server = http.createServer(app);
-// // const socket = socketIo(server);
-
-// const io = new Server();
-// io.on("connection established", (socket) => {
-//   console.log("New Connection", socket.id);
-// });
-
-// // Db connection
-// dbConnect();
-
-// app.get("/", (req, res) => {
-//   res.send("This is Home");
-// });
-// app.post("/login", loginRoute);
-// app.post("/signup", signupRoute);
-
-// server.listen(PORT, () => {
-//   console.log(`Server listening to ${PORT}`);
-// });
-
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -43,6 +9,10 @@ const io = new Server(server, {
     origin: "*",
   },
 });
+
+app.get('/',(req,res)=>{
+  res.send("Home");
+})
 
 const PORT = process.env.PORT || 5500;
 
