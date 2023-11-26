@@ -17,13 +17,19 @@ const authSlice = createSlice({
     },
     setMessages: (state, action) => {
       const message = action.payload;
-      state.messages=message;
+      state.messages = message;
     },
     setFriend: (state, action) => {
       state.selectedUser = action.payload;
+    },
+    logout: (state) => {
+      state.status = false;
+      state.username = null;
+      state.messages = [];
+      state.selectedUser = null;
     },
   },
 });
 
 export default authSlice.reducer;
-export const { setUser, setMessages, setFriend } = authSlice.actions;
+export const { setUser, setMessages, setFriend, logout } = authSlice.actions;

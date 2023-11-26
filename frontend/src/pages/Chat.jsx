@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { nanoid } from "nanoid";
 import SetFriend from "../components/SetFriend";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = process.env.REACT_APP_URL;
 
 const Chat = ({ user }) => {
   const username = useSelector((user) => user.user.username);
