@@ -31,11 +31,11 @@ This is a simple chat application built using React that allows users to send an
    ```
 3. To run the application create a .env file file in frontend and backend.
 
-4. Copy .env.local enviroment variables into .env
+4. Copy .env.local environment variables into .env
 
-##### Note: Make sure your node version is greater then 20.6.0
+##### Note: Make sure your node version is greater than 20.6.0
 
-5. Now run both frontend and backend by going to both directory.
+5. Now run both frontend and backend by going to both directories.
 
 ```
 npm start
@@ -49,4 +49,4 @@ npm start
 
 > Then the chat page will open where you chat with your selected friend. You can like _(double click on chat)_ each message in realtime and users can also delete the message by pressing the delete icon. Delete changes will not get reflected to another user.
 
-** Thank you **
+**Thank you**
